@@ -24,15 +24,13 @@ jobs:
           cache-dependency-path: vite-project/package-lock.json
       - run: npm ci
         working-directory: vite-project
-      - run: npm run build
+      - run: npm run build:gh
         working-directory: vite-project
-      - name: SPA 404
-        run: cp index.html 404.html
+      - run: cp index.html 404.html
         working-directory: vite-project/dist
       - uses: actions/upload-pages-artifact@v3
         with:
           path: vite-project/dist
-
   deploy:
     needs: build
     runs-on: ubuntu-latest
