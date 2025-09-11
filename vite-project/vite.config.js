@@ -1,8 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 
-// https://vite.dev/config/
-export default defineConfig({
-  base: '/Labs/',
+export default defineConfig(({ mode }) => ({
+  base: mode === 'github' ? '/Labs/' : '/',
   plugins: [react()],
-})
+}))
