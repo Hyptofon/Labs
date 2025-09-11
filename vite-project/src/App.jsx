@@ -10,7 +10,7 @@ function App() {
     const profile = {
         name: "Назарій Войтюк",
         role: "React Developer",
-        avatar: "/avatar.jpg",
+        avatar: import.meta.env.BASE_URL + "avatar.jpg",
         github: "https://github.com/Hyptofon/Labs",
     }
 
