@@ -38,7 +38,7 @@ export function Profile({ id, name, role, avatarUrl, github, likes, stars, onUpd
                 </h3>
                 <p className="text-gray-400 text-sm mb-4">{role}</p>
 
-                {/* GitHub Link - Centered */}
+                {/* GitHub Link */}
                 <div className="flex justify-center mb-6">
                     <a
                         href={github}
@@ -53,24 +53,26 @@ export function Profile({ id, name, role, avatarUrl, github, likes, stars, onUpd
 
                 {/* Stats and Actions */}
                 <div className="flex items-center justify-between w-full">
+                    {/* Like Button */}
                     <button
                         onClick={handleLike}
                         className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-300 ${
                             isLiked
-                                ? "bg-red-500/20 text-red-400 hover:bg-red-500/30"
-                                : "bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-red-400"
+                                ? "bg-red-500/20 text-white hover:bg-red-500/30"
+                                : "bg-gray-700 text-white hover:bg-gray-600"
                         }`}
                     >
                         <HeartIcon className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
                         <span className="text-sm font-medium">{likes}</span>
                     </button>
 
+                    {/* Star Button */}
                     <button
                         onClick={handleStar}
                         className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-300 ${
                             isStarred
-                                ? "bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30"
-                                : "bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-yellow-400"
+                                ? "bg-yellow-500/20 text-white hover:bg-yellow-500/30"
+                                : "bg-gray-700 text-white hover:bg-gray-600"
                         }`}
                     >
                         <StarIcon className={`w-4 h-4 ${isStarred ? "fill-current" : ""}`} />

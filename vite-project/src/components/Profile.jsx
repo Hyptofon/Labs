@@ -64,7 +64,7 @@ function Profile({ name, role, avatarUrl, github }) {
             </h3>
             <p
                 style={{
-                    color: "#94a3b8",
+                    color: "#a19b9b",
                     fontSize: "1rem",
                     margin: "0 0 20px 0",
                 }}
@@ -94,7 +94,7 @@ function Profile({ name, role, avatarUrl, github }) {
                     style={{
                         background: "none",
                         border: "none",
-                        color: isLiked ? "#ef4444" : "#6b7280",
+                        color: isLiked ? "#ef4444" : "#ffffff",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
@@ -121,7 +121,7 @@ function Profile({ name, role, avatarUrl, github }) {
                     style={{
                         background: "none",
                         border: "none",
-                        color: isStarred ? "#fbbf24" : "#6b7280",
+                        color: isStarred ? "#fbbf24" : "#ffffff",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
