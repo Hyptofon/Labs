@@ -7,7 +7,7 @@ export const users = [
         email: "Sincere@april.biz",
         role: "Frontend Developer",
         avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Leanne",
-        github: "https://github.com/leanne-graham",
+        github: "https://github.com/Hyptofon",
     },
     {
         id: 2,
@@ -16,7 +16,7 @@ export const users = [
         email: "Shanna@melissa.tv",
         role: "Backend Developer",
         avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ervin",
-        github: "https://github.com/ervin-howell",
+        github: "https://github.com/Hyptofon",
     },
     {
         id: 3,
@@ -25,7 +25,7 @@ export const users = [
         email: "Nathan@yesenia.net",
         role: "Full Stack Developer",
         avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Clementine",
-        github: "https://github.com/clementine-bauch",
+        github: "https://github.com/Hyptofon",
     },
     {
         id: 4,
@@ -34,7 +34,7 @@ export const users = [
         email: "Julianne.OConner@kory.org",
         role: "UI/UX Designer",
         avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Patricia",
-        github: "https://github.com/patricia-lebsack",
+        github: "https://github.com/Hyptofon",
     },
     {
         id: 5,
@@ -43,7 +43,7 @@ export const users = [
         email: "Lucio_Hettinger@annie.ca",
         role: "DevOps Engineer",
         avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Chelsey",
-        github: "https://github.com/chelsey-dietrich",
+        github: "https://github.com/Hyptofon",
     },
     {
         id: 6,
@@ -52,7 +52,7 @@ export const users = [
         email: "Karley_Dach@jasper.info",
         role: "Data Scientist",
         avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Dennis",
-        github: "https://github.com/dennis-schulist",
+        github: "https://github.com/Hyptofon",
     },
     {
         id: 7,
@@ -61,7 +61,7 @@ export const users = [
         email: "Telly.Hoeger@billy.biz",
         role: "Mobile Developer",
         avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Kurtis",
-        github: "https://github.com/kurtis-weissnat",
+        github: "https://github.com/Hyptofon",
     },
     {
         id: 8,
@@ -70,6 +70,6 @@ export const users = [
         email: "nazarii@example.com",
         role: "React Developer",
         avatarUrl: "/avatar.jpg",
-        github: "https://github.com/Hyptofon/Labs",
+        github: "https://github.com/Hyptofon",
     },
 ]
