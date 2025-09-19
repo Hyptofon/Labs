@@ -1,150 +1,208 @@
 "use client"
 
 import { useState } from "react"
+import { HeartIcon } from "./icons/HeartIcon"
+import { StarIcon } from "./icons/StarIcon"
+import { GitHubIcon } from "./icons/GitHubIcon"
 
-function Profile({ name, role, avatarUrl, github }) {
-    const [likes, setLikes] = useState(Math.floor(Math.random() * 50) + 10)
-    const [stars, setStars] = useState(Math.floor(Math.random() * 30) + 5)
+
+export function Profile({ id, name, username, email, address, phone, website, company, onAction }) {
     const [isLiked, setIsLiked] = useState(false)
-    const [isStarred, setIsStarred] = useState(false)
+    const [isBookmarked, setIsBookmarked] = useState(false)
+    const [isHovered, setIsHovered] = useState(false)
+
+    const getInitials = (name) => {
+        return name
+            .split(" ")
+            .map((word) => word[0])
+            .join("")
+            .toUpperCase()
+            .slice(0, 2)
+    }
+
+    const getAvatarColor = (name) => {
+        const colors = [
+            "bg-blue-500",
+            "bg-green-500",
+            "bg-purple-500",
+            "bg-pink-500",
+            "bg-indigo-500",
+            "bg-yellow-500",
+            "bg-red-500",
+            "bg-teal-500",
+            "bg-orange-500",
+            "bg-cyan-500",
+        ]
+
+        let hash = 0
+        for (let i = 0; i < name.length; i++) {
+            hash = name.charCodeAt(i) + ((hash << 5) - hash)
+        }
+
+        return colors[Math.abs(hash) % colors.length]
+    }
 
     const handleLike = () => {
         setIsLiked(!isLiked)
-        setLikes((prev) => (isLiked ? prev - 1 : prev + 1))
+        onAction?.(id, "like")
     }
 
-    const handleStar = () => {
-        setIsStarred(!isStarred)
-        setStars((prev) => (isStarred ? prev - 1 : prev + 1))
+    const handleBookmark = () => {
+        setIsBookmarked(!isBookmarked)
+        onAction?.(id, "bookmark")
     }
 
     return (
         <div
-            style={{
-                background: "rgba(30, 41, 59, 0.8)",
-                borderRadius: "16px",
-                padding: "32px",
-                textAlign: "center",
-                border: "1px solid rgba(148, 163, 184, 0.1)",
-                backdropFilter: "blur(10px)",
-                transition: "all 0.3s ease",
-                cursor: "pointer",
-                width: "100%",
-                maxWidth: "380px",
-            }}
-            onMouseEnter={(e) => {
-                e.target.style.transform = "translateY(-8px)"
-                e.target.style.boxShadow = "0 20px 40px rgba(0, 0, 0, 0.3)"
-            }}
-            onMouseLeave={(e) => {
-                e.target.style.transform = "translateY(0)"
-                e.target.style.boxShadow = "none"
-            }}
+            className="group relative glass glass-hover rounded-2xl p-8 transition-all duration-500 hover:scale-105 glow-hover"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
         >
-            <img
-                src={avatarUrl || "/placeholder.svg"}
-                alt={name}
-                style={{
-                    width: "80px",
-                    height: "80px",
-                    borderRadius: "50%",
-                    marginBottom: "16px",
-                    border: "3px solid rgba(96, 165, 250, 0.3)",
-                }}
-            />
-            <h3
-                style={{
-                    color: "white",
-                    fontSize: "1.5rem",
-                    margin: "0 0 8px 0",
-                    fontWeight: 600,
-                }}
-            >
-                {name}
-            </h3>
-            <p
-                style={{
-                    color: "#a19b9b",
-                    fontSize: "1rem",
-                    margin: "0 0 20px 0",
-                }}
-            >
-                {role}
-            </p>
+            {/* Background gradient on hover */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-            <a
-                href={github}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                    display: "inline-block",
-                    marginBottom: "20px",
-                    color: "#60a5fa",
-                    textDecoration: "none",
-                }}
-            >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                </svg>
-            </a>
+            {/* Content */}
+            <div className="relative z-10 flex flex-col items-center text-center">
+                {/* Avatar with glow effect */}
+                <div className="relative mb-6">
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-md opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
+                    <div className="relative border-4 border-white rounded-full shadow-lg group-hover:border-primary/30 transition-all duration-300">
+                        <div
+                            className={`${getAvatarColor(name)} rounded-full flex items-center justify-center text-white font-bold text-2xl`}
+                            style={{ width: 112, height: 112 }}
+                        >
+                            {getInitials(name)}
+                        </div>
+                    </div>
 
-            <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center" }}>
-                <button
-                    onClick={handleLike}
-                    style={{
-                        background: "none",
-                        border: "none",
-                        color: isLiked ? "#ef4444" : "#ffffff",
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        fontSize: "0.9rem",
-                        transition: "color 0.2s ease",
-                    }}
-                >
-                    <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill={isLiked ? "currentColor" : "none"}
-                        stroke="currentColor"
-                        strokeWidth="2"
+                    {/* Status indicator */}
+                    <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-green-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
+                        <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+                    </div>
+                </div>
+
+                {/* Name and username */}
+                <h3 className="text-xl font-bold text-foreground mb-1 group-hover:gradient-text transition-all duration-300">
+                    {name}
+                </h3>
+                <p className="text-muted-foreground text-sm mb-4 font-medium">@{username}</p>
+
+                {company && (
+                    <div className="mb-4 p-3 glass rounded-xl w-full">
+                        <div className="text-sm font-semibold text-foreground mb-1">{company.name}</div>
+                        <div className="text-xs text-muted-foreground italic">{company.catchPhrase}</div>
+                    </div>
+                )}
+
+                <div className="flex flex-wrap items-center justify-center gap-2 mb-6 text-xs w-full">
+                    <div className="flex items-center gap-1 px-3 py-1 glass rounded-full">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                        </svg>
+                        <span className="text-muted-foreground truncate max-w-[120px]">{email}</span>
+                    </div>
+
+                    {phone && (
+                        <div className="flex items-center gap-1 px-3 py-1 glass rounded-full">
+                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                            </svg>
+                            <span className="text-muted-foreground">{phone}</span>
+                        </div>
+                    )}
+                </div>
+
+                {address && (
+                    <div className="mb-6 w-full">
+                        <div className="flex items-center gap-1 px-3 py-2 glass rounded-xl justify-center">
+                            <svg className="w-4 h-4 text-muted-foreground" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    fillRule="evenodd"
+                                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                    clipRule="evenodd"
+                                />
+                            </svg>
+                            <div className="text-center">
+                                <div className="text-sm text-foreground">
+                                    {address.street}, {address.suite}
+                                </div>
+                                <div className="text-xs text-muted-foreground">
+                                    {address.city}, {address.zipcode}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {website && (
+                    <div className="mb-6">
+                        <a
+                            href={`https://${website}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 glass glass-hover rounded-xl group/website transition-all duration-300 hover:scale-105"
+                        >
+                            <GitHubIcon className="w-4 h-4" />
+                            <span className="text-sm text-muted-foreground group-hover/website:text-foreground transition-colors">
+                {website}
+              </span>
+                        </a>
+                    </div>
+                )}
+
+                {company?.bs && (
+                    <div className="mb-6 w-full">
+                        <div className="px-4 py-2 bg-accent/10 rounded-xl border border-accent/20">
+                            <div className="text-xs font-medium text-foreground">Specializes in:</div>
+                            <div className="text-sm text-muted-foreground">{company.bs}</div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Actions */}
+                <div className="flex items-center justify-between w-full gap-4">
+                    {/* Like button */}
+                    <button
+                        onClick={handleLike}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 flex-1 justify-center ${
+                            isLiked
+                                ? "bg-red-500/20 text-red-400 hover:bg-red-500/30 glow"
+                                : "glass glass-hover text-muted-foreground hover:text-foreground"
+                        }`}
                     >
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                    </svg>
-                    {likes}
-                </button>
+                        <HeartIcon
+                            className={`w-5 h-5 transition-all duration-300 ${isLiked ? "scale-110 fill-current" : "group-hover:scale-110"}`}
+                        />
+                        <span className="font-semibold">Like</span>
+                    </button>
 
-                <button
-                    onClick={handleStar}
-                    style={{
-                        background: "none",
-                        border: "none",
-                        color: isStarred ? "#fbbf24" : "#ffffff",
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        fontSize: "0.9rem",
-                        transition: "color 0.2s ease",
-                    }}
-                >
-                    <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill={isStarred ? "currentColor" : "none"}
-                        stroke="currentColor"
-                        strokeWidth="2"
+                    {/* Bookmark button */}
+                    <button
+                        onClick={handleBookmark}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 flex-1 justify-center ${
+                            isBookmarked
+                                ? "bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 glow"
+                                : "glass glass-hover text-muted-foreground hover:text-foreground"
+                        }`}
                     >
-                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-                    </svg>
-                    {stars}
-                </button>
+                        <StarIcon
+                            className={`w-5 h-5 transition-all duration-300 ${isBookmarked ? "scale-110 fill-current" : "group-hover:scale-110"}`}
+                        />
+                        <span className="font-semibold">Save</span>
+                    </button>
+                </div>
             </div>
+
+            {/* Hover effect particles */}
+            {isHovered && (
+                <>
+                    <div className="absolute top-4 right-4 w-2 h-2 bg-primary rounded-full animate-ping"></div>
+                    <div
+                        className="absolute bottom-4 left-4 w-1 h-1 bg-accent rounded-full animate-ping"
+                        style={{ animationDelay: "0.5s" }}
+                    ></div>
+                </>
+            )}
         </div>
     )
 }
-
-export default Profile

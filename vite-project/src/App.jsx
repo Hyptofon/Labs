@@ -1,89 +1,88 @@
-import Profile from "./components/Profile"
-import { users } from "./data/users"
-import "./App.css"
+"use client"
+
+import { useState, useEffect } from "react"
+import { Header } from "./components/Header"
+import { ProfileGrid } from "./components/ProfileGrid"
+import { Footer } from "./components/Footer"
+import { LoadingSpinner } from "./components/LoadingSpinner"
+import usersData from "./data/users.json"
 
 function App() {
-    return (
-        <main
-            style={{
-                minHeight: "100vh",
-                background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-                padding: "40px 20px",
-            }}
-        >
-            <div
-                style={{
-                    maxWidth: "1400px",
-                    margin: "0 auto",
-                }}
-            >
-                <header
-                    style={{
-                        textAlign: "center",
-                        marginBottom: "48px",
-                    }}
-                >
-                    <h1
-                        style={{
-                            color: "white",
-                            fontSize: "3rem",
-                            margin: "0 0 16px 0",
-                            fontWeight: 700,
-                            background: "linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%)",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                            backgroundClip: "text",
-                        }}
-                    >
-                        Команда Розробників
-                    </h1>
-                    <p
-                        style={{
-                            color: "#94a3b8",
-                            fontSize: "1.2rem",
-                            margin: 0,
-                            maxWidth: "600px",
-                            marginLeft: "auto",
-                            marginRight: "auto",
-                        }}
-                    >
-                        Познайомтеся з нашою командою талановитих розробників
-                    </p>
-                </header>
+    const [profilesData, setProfilesData] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fit, minmax(380px, 1fr))",
-                        gap: "32px",
-                        justifyItems: "center",
-                    }}
-                >
-                    {users.map((user) => (
-                        <Profile key={user.id} name={user.name} role={user.role} avatarUrl={user.avatarUrl} github={user.github} />
-                    ))}
-                </div>
+    useEffect(() => {
+        const fetchProfiles = async () => {
+            try {
+                setLoading(true)
+                setError(null)
 
-                <footer
-                    style={{
-                        textAlign: "center",
-                        marginTop: "64px",
-                        padding: "32px 0",
-                        borderTop: "1px solid #374151",
-                    }}
-                >
-                    <p
-                        style={{
-                            color: "#6b7280",
-                            fontSize: "0.9rem",
-                            margin: 0,
-                        }}
-                    >
-                        © 2024 React Profiles Lab. Створено з ❤️ використовуючи React + Vite
-                    </p>
-                </footer>
+                await new Promise((resolve) => setTimeout(resolve, 2000))
+
+                const usersWithAvatars = usersData.map((user) => ({
+                    ...user,
+                }))
+
+                setProfilesData(usersWithAvatars)
+            } catch (err) {
+                setError(err.message)
+                console.error("Loading error:", err)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchProfiles()
+    }, [])
+
+    const handleProfileAction = (id, action) => {
+        console.log(`Action ${action} completed for user ${id}`)
+    }
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+                <LoadingSpinner />
             </div>
-        </main>
+        )
+    }
+
+    if (error) {
+        return (
+            <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+                <div className="text-center">
+                    <h2 className="text-2xl font-bold text-red-400 mb-4">Loading Error</h2>
+                    <p className="text-muted-foreground mb-6">{error}</p>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                    >
+                        Try Again
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+            {/* Updated background for light theme */}
+            <div className="fixed inset-0 -z-10">
+                <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5"></div>
+                <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
+            </div>
+
+            {/* Content */}
+            <Header />
+
+            <main className="container mx-auto px-6 py-16">
+                <ProfileGrid profiles={profilesData} onAction={handleProfileAction} />
+            </main>
+
+            <Footer />
+        </div>
     )
 }
 
